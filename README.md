@@ -1,3 +1,6 @@
+# Api Para Condomínio 
+- Biblioteca PHP para validacao da Api usando **Laravel**_
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -7,60 +10,90 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+-----------------------------------------------------------------------------------------------------------------------
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Como usar
+Para Facilitar a utilizacão, use a ferramenta Postman para fazer e enviar as requisicões
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Criar usuários 
+Route::post('/auth/register', [AuthController::class, 'register']);
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```php
+    $validator = Validator::make($request->all(), [
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email',
+        'cpf' => 'required|digits:11|unique:users,cpf',
+        'password' => 'required',
+        'password_confirm' => 'required|same:password',
+    ]);
+```
 
-## Learning Laravel
+- Login 
+Route::post('/auth/login', [AuthController::class, 'login']);
+```php
+        $cpf = $request->input('cpf');
+        $password = $request->input('password');
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Route::post('/auth/validate', [AuthController::class, 'validateToken']);
+    ```Route::post('/auth/logout', [AuthController::class, 'logout']);``` - Logout
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    ```Route::put('/user', [UserController::class, 'update']);```  - Editar informacões
 
-## Laravel Sponsors
+    //Moral de Avisos
+    ```Route::get('/walls', [WallController::class, 'getAll']);``` - Pegar todos os avisos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    ```Route::post('/wall/{id}/like', [WallController::class, 'like']);``` - Dar like nos avisos
 
-### Premium Partners
+    //Documentos
+    ```Route::get('/docs', [DocController::class, 'getAll']);``` - Pegar todos os documentos
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+    //Livros de ocorrências
+    ```Route::get('/warnings', [WarningController::class, 'getMyWarnings']);``` - Pegar Todas as ocorrências
 
-## Contributing
+    ```Route::post('/warning', [WarningController::class, 'setWarning']);``` - Adicionar ocorrência
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ```Route::post('/warning/file', [WarningController::class, 'addWarningFile']);``` - Adicionar Foto e anexar a ocorrência
 
-## Code of Conduct
+    //Boletos
+    ```Route::get('/billets', [BilletController::class, 'getAll']);``` Pegar todos os boletos 
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    //Achados e Perdidos 
+    ```Route::get('/foundandlost', [FoundAndLostController::class, 'getAll']);``` - Ver todos os achados e perdidos
 
-## Security Vulnerabilities
+    ```Route::post('/foundandlost', [FoundAndLostController::class, 'insert']);``` - Inserir novo objeto no achados e perdidos
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```Route::put('/foundandlost/{id}', [FoundAndLostController::class, 'update']);``` - Atualizar informacões no achados e perdidos. exemplo - Objeto devolvido 
 
-## License
+    //Unidade
+    ```Route::get('/unit/{id}', [UnitController::class, 'getInfo']);``` Informacões de cada apartamento por Id
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    ```Route::post('/unit/{id}/addperson', [UnitController::class, 'addPerson']);``` - Adicionar nova pessoa
+
+    ```Route::post('/unit/{id}/addvehicle', [UnitController::class, 'addVehicle']);``` - Adicionar novo veículo
+
+    ```Route::post('/unit/{id}/addpet', [UnitController::class, 'addPet']);``` - Adicionar novo Pet 
+
+    ```Route::post('/unit/{id}/removeperson', [UnitController::class, 'removePerson']);``` - Remover Pessoa 
+
+    ```Route::post('/unit/{id}/removevehicle', [UnitController::class, 'removeVehicle']);``` - Remover Veículo
+
+    ```Route::post('/unit/{id}/removepet', [UnitController::class, 'removePet']);``` - Remover Pet
+     
+    //Reservas 
+   ```Route::get('/reservations', [ReservationController::class, 'getReservations']);``` - Ver todas reservas das áreas de lazer
+
+    ```Route::post('/reservation/{id}', [ReservationController::class, 'setReservation']);``` - Fazer uma reserva 
+
+    ```Route::get('/reservation/{id}/disableddates', [ReservationController::class, 'getDisabledDates']);``` - Dias desativados. exemplo: horario ou dia de manutencão ou limpeza da área.
+
+    ```Route::get('/reservation/{id}/times', [ReservationController::class, 'getTimes']);``` - Horarios de reservas
+
+    ```Route::get('/myreservations', [ReservationController::class, 'getMyReservations']);``` - Minhas reservas
+
+    ```Route::delete('/myreservation/{id}', [ReservationController::class, 'deleteMyReservation']); - Excluir reservas 
+
+
+
+Fique a vontade para contribuir de qualquer forma.
