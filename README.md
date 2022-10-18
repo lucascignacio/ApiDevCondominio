@@ -37,6 +37,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 ```
 
 Route::post('/auth/validate', [AuthController::class, 'validateToken']);
+
     ```Route::post('/auth/logout', [AuthController::class, 'logout']);``` - Logout
 
     ```Route::put('/user', [UserController::class, 'update']);```  - Editar informacões
@@ -82,9 +83,10 @@ Route::post('/auth/validate', [AuthController::class, 'validateToken']);
     ```Route::post('/unit/{id}/removepet', [UnitController::class, 'removePet']);``` - Remover Pet
      
     //Reservas 
-   ```Route::get('/reservations', [ReservationController::class, 'getReservations']);``` - Ver todas reservas das áreas de lazer
 
     ```Route::post('/reservation/{id}', [ReservationController::class, 'setReservation']);``` - Fazer uma reserva 
+    
+    ```Route::get('/reservations', [ReservationController::class, 'getReservations']);``` - Ver todas reservas das áreas de lazer
 
     ```Route::get('/reservation/{id}/disableddates', [ReservationController::class, 'getDisabledDates']);``` - Dias desativados. exemplo: horario ou dia de manutencão ou limpeza da área.
 
